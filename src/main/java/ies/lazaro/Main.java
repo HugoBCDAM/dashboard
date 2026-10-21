@@ -29,6 +29,8 @@ public class Main extends Application {
     private int totalIncidenciasAbiertas = 0;
     private int totalIncidenciasEnProceso = 0;
     private int totalIncidenciasResueltas = 0;
+    private ComboBox<String> comboNuevaPrioridad;
+    private Label mensaje;
 
     @Override 
     public void start(Stage stage) {
@@ -72,10 +74,16 @@ public class Main extends Application {
 
         estadoIncidencias.setAlignment(Pos.CENTER);
 
+        mensaje = new Label();
+        mensaje.setWrapText(true);
+        mensaje.setMaxWidth(Double.MAX_VALUE);
+        mensaje.setAlignment(Pos.CENTER);
+
         VBox raiz = new VBox(14, 
             incidencias,
             listaIncidencias,
-            estadoIncidencias
+            estadoIncidencias,
+            mensaje
         );
 
         raiz.setPadding(new Insets(20));
@@ -94,33 +102,46 @@ public class Main extends Application {
         stage.show();
     }
 
-    public void nuevaIncidencia(Stage stage) {
+    private void nuevaIncidencia(Stage stage) {
         TextField campoNuevaIncidencia = new TextField();
         campoNuevaIncidencia.setPromptText("Escribe la nueva incidencia");
 
         HBox.setHgrow(campoNuevaIncidencia, Priority.ALWAYS);
 
-        comboNuevaEstado = new ComboBox<>();
-        comboNuevaEstado.getItems().addAll("Abierta", "En Proceso", "Resuelta");
-        comboNuevaEstado.setValue("Abierta");
-
         campoDescripcion = new TextArea();
         campoDescripcion.setPrefHeight(300);
         campoDescripcion.setWrapText(true);
 
-        Button crearIncidencia = new Button("Crear Incidencia");
-        crearIncidencia.setDefaultButton(true);
+        comboNuevaEstado = new ComboBox<>();
+        comboNuevaEstado.getItems().addAll("Abierta", "En Proceso", "Resuelta");
+        comboNuevaEstado.setValue("Abierta");
 
-        HBox botonNuevaIncidenciaBox = new HBox(crearIncidencia);
+        comboNuevaPrioridad = new ComboBox<>();
+        comboNuevaPrioridad.getItems().addAll("Alta", "Media", "Baja");
+        comboNuevaPrioridad.setValue("Media");
+
+        Button crearIncidencia = new Button("Guardar Incidencia");
+        crearIncidencia.setDefaultButton(false);
+
+        Button cancelar = new Button("Cerrar");
+        cancelar.setDefaultButton(true);
+        
+        HBox botonNuevaIncidenciaBox = new HBox (10, 
+            cancelar, 
+            crearIncidencia
+        );
+
         botonNuevaIncidenciaBox.setAlignment(Pos.CENTER);
 
         VBox nuevaIncidenciaBox = new VBox(14,
-            new Label("Nueva Incidencia:"),
+            new Label("Titulo:"),
             campoNuevaIncidencia,
-            new Label("Estado de la Incidencia:"),
-            comboNuevaEstado,
-            new Label("Descripción de la Incidencia:"),
+            new Label("Descripción:"),
             campoDescripcion,
+            new Label("Prioridad:"),
+            comboNuevaPrioridad,
+            new Label("Estado:"),
+            comboNuevaEstado,
             botonNuevaIncidenciaBox
         );
 
@@ -145,6 +166,10 @@ public class Main extends Application {
         stage.setScene(nuevaIncidenciaScene);
         stage.setResizable(false);
         stage.show();
+    }
+
+    private void mostrarMensaje(Label mensaje) {
+        this.mensaje = mensaje;
     }
     public static void main(String[] args) {
         launch();
