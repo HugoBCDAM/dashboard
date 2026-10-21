@@ -108,16 +108,6 @@ public class Main extends Application {
         campoDescripcion.setPrefHeight(300);
         campoDescripcion.setWrapText(true);
 
-        totalIncidenciasHechas++;
-
-        if (comboNuevaEstado.getValue().equals("Abierta")) {
-            totalIncidenciasAbiertas++;
-        } else if (comboNuevaEstado.getValue().equals("En Proceso")) {
-            totalIncidenciasEnProceso++;
-        } else if (comboNuevaEstado.getValue().equals("Resuelta")) {
-            totalIncidenciasResueltas++;
-        }
-
         Button crearIncidencia = new Button("Crear Incidencia");
         crearIncidencia.setDefaultButton(true);
 
@@ -137,6 +127,16 @@ public class Main extends Application {
         nuevaIncidenciaBox.setPadding(new Insets(20));
 
         crearIncidencia.setOnAction(e -> {
+            totalIncidenciasHechas++;
+
+            if (comboNuevaEstado.getValue().equals("Abierta")) {
+                totalIncidenciasAbiertas++;
+            } else if (comboNuevaEstado.getValue().equals("En Proceso")) {
+                totalIncidenciasEnProceso++;
+            } else if (comboNuevaEstado.getValue().equals("Resuelta")) {
+                totalIncidenciasResueltas++;
+            }
+            
             start(stage);
         });
 
