@@ -81,9 +81,9 @@ public class Main extends Application {
         raiz.setPadding(new Insets(20));
 
         VBox.setVgrow(listaIncidencias, Priority.ALWAYS);
-
+        Label e = new Label();
         botonNuevaIncidencia.setOnAction(e -> nuevaIncidencia(stage));
-        
+
         escenaIncidencias(stage, raiz);
     }
 
