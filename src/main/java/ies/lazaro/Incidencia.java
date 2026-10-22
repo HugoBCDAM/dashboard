@@ -6,7 +6,6 @@ public class Incidencia {
     private String descripcion;
     private String estado;
     private String prioridad;
-    private Main main;
 
     public Incidencia(int id, String titulo, String descripcion, String estado, String prioridad) {
         this.id = id;
