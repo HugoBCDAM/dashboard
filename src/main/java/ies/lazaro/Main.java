@@ -99,6 +99,7 @@ public class Main extends Application {
         Scene scene = new Scene(raiz, 800, 500);
         stage.setTitle("Dashboard de Incidencias");
         stage.setScene(scene);
+        stage.setResizable(true);
         stage.show();
     }
 
