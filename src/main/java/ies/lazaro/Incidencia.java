@@ -14,7 +14,6 @@ public class Incidencia {
         this.descripcion = descripcion;
         this.estado = estado;
         this.prioridad = prioridad;
-        this.main = main;
     }
 
     public int getId() {
