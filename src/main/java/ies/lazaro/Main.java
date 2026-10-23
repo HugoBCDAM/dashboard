@@ -145,7 +145,7 @@ public class Main extends Application {
         listaIncidencias.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
 
         crearIncidenciasIniciales();
-
+        
         listaIncidencias.getItems().setAll(this.incidencias);
         
         totalIncidencias = new Label("Total de incidencias: " + totalIncidenciasHechas);
