@@ -46,7 +46,10 @@ public class Main extends Application {
 
     @Override 
     public void start(Stage stage) {
-        incidencias = new ArrayList<>();
+        if (incidencias == null) {
+            incidencias = new ArrayList<>();
+            crearIncidenciasIniciales();
+        }
         
         TextField campoBuscar = new TextField();
         campoBuscar.setPromptText("Escribe una incidencia");
@@ -55,12 +58,18 @@ public class Main extends Application {
 
         Button botonBuscar = new Button("Buscar");
         botonBuscar.setDefaultButton(true);
+        botonBuscar.setStyle("-fx-background-color: #3775fc; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
+        botonBuscar.setOnMouseEntered(e -> botonBuscar.setStyle("-fx-background-color: rgb(0, 0, 255); -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        botonBuscar.setOnMouseExited(e -> botonBuscar.setStyle("-fx-background-color: #3775fc; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
 
         comboEstado = new ComboBox<>();
-        comboEstado.getItems().addAll("Abiertas", "En Proceso", "Resueltas");
+        comboEstado.getItems().addAll("Abiertas", "En Proceso", "Resueltas", "Todo");
         comboEstado.setPromptText("Filtrar");
 
         Button botonNuevaIncidencia = new Button("Nueva Incidencia");
+        botonNuevaIncidencia.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
+        botonNuevaIncidencia.setOnMouseEntered(e -> botonNuevaIncidencia.setStyle("-fx-background-color: rgb(41, 107, 43); -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        botonNuevaIncidencia.setOnMouseExited(e -> botonNuevaIncidencia.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
 
         HBox incidencias = new HBox(10,
             campoBuscar,
@@ -122,6 +131,14 @@ public class Main extends Application {
                         "-fx-cursor: hand;"
                     )
                 );
+
+                botonDetalles.setOnAction(e -> {
+                    Incidencia incidenciaSeleccionada = getTableRow().getItem();
+
+                    if (incidenciaSeleccionada != null) {
+                        verDetalles(stage, incidenciaSeleccionada);
+                    }
+                });
             }
 
             @Override
@@ -143,20 +160,37 @@ public class Main extends Application {
         );
 
         listaIncidencias.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-
-        crearIncidenciasIniciales();
         
         listaIncidencias.getItems().setAll(this.incidencias);
         
         totalIncidencias = new Label("Total de incidencias: " + totalIncidenciasHechas);
-        incidenciasAbiertas = new Label("Abiertas: " + totalIncidenciasAbiertas);
-        incidenciasEnProceso = new Label("En Proceso: " + totalIncidenciasEnProceso);
-        incidenciasResueltas = new Label("Resueltas: " + totalIncidenciasResueltas);
+        totalIncidencias.setStyle("-fx-font-weight: bold;");
 
+        incidenciasAbiertas = new Label("Abiertas: " + totalIncidenciasAbiertas);
+        incidenciasAbiertas.setStyle("-fx-font-weight: bold;");
+
+        incidenciasEnProceso = new Label("En Proceso: " + totalIncidenciasEnProceso);
+        incidenciasEnProceso.setStyle("-fx-font-weight: bold;");
+
+        incidenciasResueltas = new Label("Resueltas: " + totalIncidenciasResueltas);
+        incidenciasResueltas.setStyle("-fx-font-weight: bold;");
+
+        Label separacion1 = new Label(" | ");
+        separacion1.setStyle("-fx-font-weight: bold;");
+
+        Label separacion2 = new Label(" | ");
+        separacion2.setStyle("-fx-font-weight: bold;");
+
+        Label separacion3 = new Label(" | ");
+        separacion3.setStyle("-fx-font-weight: bold;");
+        
         HBox estadoIncidencias = new HBox(10,
             totalIncidencias, 
+            separacion1,
             incidenciasAbiertas, 
+            separacion2,
             incidenciasEnProceso, 
+            separacion3,
             incidenciasResueltas
         );
 
@@ -166,21 +200,130 @@ public class Main extends Application {
         mensaje.setWrapText(true);
         mensaje.setMaxWidth(Double.MAX_VALUE);
         mensaje.setAlignment(Pos.CENTER);
-
+        mensaje.setStyle("-fx-font-weight: bold;");
+        
         VBox.setVgrow(listaIncidencias, Priority.ALWAYS);
         
+        VBox registroIncidenciasMensaje = new VBox(14,
+            estadoIncidencias,
+            mensaje
+        );
+
+        registroIncidenciasMensaje.setStyle("-fx-background-color: #d2d3d2; -fx-padding: 5px;");
+
         botonNuevaIncidencia.setOnAction(e -> nuevaIncidencia(stage));
 
         VBox raiz = new VBox(14, 
             incidencias,
             listaIncidencias,
-            estadoIncidencias,
-            mensaje
+            registroIncidenciasMensaje
         );
 
         raiz.setPadding(new Insets(20));
 
         escenaIncidencias(stage, raiz);
+    }
+
+    private void verDetalles(Stage stage, Incidencia incidenciaSeleccionada) {
+        Label idDetalles = new Label("ID:");
+        Label idDetallesValor = new Label(String.valueOf(incidenciaSeleccionada.getId()));
+
+        Label tituloDetalles = new Label("Titulo:");
+        Label tituloDetallesValor = new Label(incidenciaSeleccionada.getTitulo());
+
+        Label descripcionDetalles = new Label("Descripción:");
+        Label descripcionDetallesValor = new Label(incidenciaSeleccionada.getDescripcion());
+
+        Label prioridadDetalles = new Label("Prioridad:");
+        Label prioridadDetallesValor = new Label(incidenciaSeleccionada.getPrioridad());
+
+        Label estadoDetalles = new Label("Estado:");
+        Label estadoDetallesValor = new Label(incidenciaSeleccionada.getEstado());
+
+        VBox cabecerasDetalles = new VBox(10,
+            idDetalles,
+            tituloDetalles,
+            descripcionDetalles,
+            prioridadDetalles,
+            estadoDetalles
+        );
+
+        cabecerasDetalles.setStyle("-fx-border-color: black; -fx-border-width: 1px; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-color: #bdb9b9;");
+        
+        VBox valoresDetalles = new VBox(10,
+            idDetallesValor,
+            tituloDetallesValor,
+            descripcionDetallesValor,
+            prioridadDetallesValor,
+            estadoDetallesValor
+        );
+
+        valoresDetalles.setStyle("-fx-border-color: black; -fx-border-width: 1px; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-color: #e0dede;");
+        
+        HBox detallesHBox = new HBox(cabecerasDetalles, valoresDetalles);
+        detallesHBox.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(valoresDetalles, Priority.ALWAYS);
+        valoresDetalles.setMaxWidth(Double.MAX_VALUE);
+
+        Label cambiarEstadoDetalles = new Label("Cambiar Estado: ");
+        ComboBox<String> comboCambiarEstado = new ComboBox<>();
+        comboCambiarEstado.getItems().addAll("Abierta", "En Proceso", "Resuelta");
+        comboCambiarEstado.setValue(incidenciaSeleccionada.getEstado());
+
+        Button botonCerrarDetalles = new Button("Cerrar");
+        Button botonGuardarCambios = new Button("Guardar");
+
+        botonGuardarCambios.setDefaultButton(false);
+        botonGuardarCambios.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
+        botonGuardarCambios.setOnMouseEntered(e -> botonGuardarCambios.setStyle("-fx-background-color: rgb(42, 107, 44); -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        botonGuardarCambios.setOnMouseExited(e -> botonGuardarCambios.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+
+        botonCerrarDetalles.setDefaultButton(true);
+        botonCerrarDetalles.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
+        botonCerrarDetalles.setOnMouseEntered(e -> botonCerrarDetalles.setStyle("-fx-background-color: #b40202; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        botonCerrarDetalles.setOnMouseExited(e -> botonCerrarDetalles.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        
+        HBox cambiarEstadoBox = new HBox(10, 
+            cambiarEstadoDetalles,
+            comboCambiarEstado,
+            new Label("\t"),
+            botonCerrarDetalles,
+            botonGuardarCambios
+        );
+
+        VBox detallesBox = new VBox(10,
+            detallesHBox,
+            new Label(""),
+            cambiarEstadoBox
+        );
+        
+        detallesBox.setPadding(new Insets(20));
+
+        botonGuardarCambios.setOnAction(e -> {
+            String estadoActual = incidenciaSeleccionada.getEstado();
+            String nuevoEstado = comboCambiarEstado.getValue();
+
+            if (nuevoEstado.equalsIgnoreCase(estadoActual)) {
+                mostrarMensaje(new Label("No se actualizó el estado porque has seleccionado el mismo estado."));
+            } else {
+                incidenciaSeleccionada.setEstado(nuevoEstado);
+
+                mostrarMensaje(new Label("El estado de la incidencia se actualizó correctamente."));
+            }
+
+            start(stage);
+        });
+
+        botonCerrarDetalles.setOnAction(e -> {
+            mostrarMensaje(new Label("Los detalles de la incidencia se han cerrado correctamente"));
+            start(stage);
+        });
+
+        Scene verDetallesScene = new Scene(detallesBox, 435, 230);
+        stage.setTitle("Detalles de la Incidencia");
+        stage.setScene(verDetallesScene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     private void crearIncidenciasIniciales() {
@@ -207,6 +350,8 @@ public class Main extends Application {
             "Alta"
             )
         );
+
+        mostrarMensaje(new Label("Incidencias cargadas con éxito"));
     }
 
     private void escenaIncidencias(Stage stage, VBox raiz) {
@@ -235,14 +380,31 @@ public class Main extends Application {
         comboNuevaPrioridad.getItems().addAll("Alta", "Media", "Baja");
         comboNuevaPrioridad.setValue("Media");
 
-        Button crearIncidencia = new Button("Guardar Incidencia");
+        HBox estadoPrioridadNuevaIncidenciaBox = new HBox(10,
+            new Label("Estado:"),
+            comboNuevaEstado,
+            new Label("\t\t"), 
+            new Label("Prioridad:"),
+            comboNuevaPrioridad
+        );
+
+        estadoPrioridadNuevaIncidenciaBox.setAlignment(Pos.CENTER);
+        
+        Button crearIncidencia = new Button("Guardar");
         crearIncidencia.setDefaultButton(false);
+        crearIncidencia.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
+        crearIncidencia.setOnMouseEntered(e -> crearIncidencia.setStyle("-fx-background-color: rgb(42, 107, 44); -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        crearIncidencia.setOnMouseExited(e -> crearIncidencia.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
 
         Button cancelar = new Button("Cerrar");
         cancelar.setDefaultButton(true);
-        
+        cancelar.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
+        cancelar.setOnMouseEntered(e -> cancelar.setStyle("-fx-background-color: #b40202; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        cancelar.setOnMouseExited(e -> cancelar.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+
         HBox botonNuevaIncidenciaBox = new HBox (10, 
             cancelar, 
+            new Label("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
             crearIncidencia
         );
 
@@ -253,10 +415,7 @@ public class Main extends Application {
             campoNuevaIncidencia,
             new Label("Descripción:"),
             campoDescripcion,
-            new Label("Prioridad:"),
-            comboNuevaPrioridad,
-            new Label("Estado:"),
-            comboNuevaEstado,
+            estadoPrioridadNuevaIncidenciaBox,
             botonNuevaIncidenciaBox
         );
 
