@@ -43,7 +43,8 @@ public class Main extends Application {
     private ComboBox<String> comboNuevaPrioridad;
     private Label mensaje;
     private String textoMensaje = "";
-
+    private int totalEscenas = 0;
+    
     @Override 
     public void start(Stage stage) {
         incidencias = new ArrayList<>();
