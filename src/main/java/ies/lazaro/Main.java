@@ -50,6 +50,9 @@ public class Main extends Application {
             incidencias = new ArrayList<>();
             crearIncidenciasIniciales();
         }
+
+
+        actualizarContadores();
         
         TextField campoBuscar = new TextField();
         campoBuscar.setPromptText("Escribe una incidencia");
@@ -213,6 +216,11 @@ public class Main extends Application {
 
         botonNuevaIncidencia.setOnAction(e -> nuevaIncidencia(stage));
 
+        botonBuscar.setOnAction(e -> buscarIncidencias(campoBuscar.getText()));
+
+        
+
+
         comboEstado.setOnAction(e -> {
             String estado = comboEstado.getValue();
 
@@ -242,6 +250,24 @@ public class Main extends Application {
 
         escenaIncidencias(stage, raiz);
     }
+
+    private void actualizarContadores() {
+            totalIncidenciasHechas = incidencias.size();
+            totalIncidenciasAbiertas = 0;
+            totalIncidenciasEnProceso = 0;
+            totalIncidenciasResueltas = 0;
+
+            for (int i=0; i < incidencias.size(); i++) {
+                String estado = this.incidencias.get(i).getEstado();
+               if (estado.equals("Abierta")) {
+                    totalIncidenciasAbiertas++;
+                } else if (estado.equals("En Proceso")) {
+                    totalIncidenciasEnProceso++;
+                } else if (estado.equals("Resuelta")) {
+                    totalIncidenciasResueltas++;
+                }
+            }
+        }
 
     private void filtrarTodas() {
         listaIncidencias.getItems().setAll(this.incidencias);
@@ -280,6 +306,28 @@ public class Main extends Application {
         }
 
         listaIncidencias.getItems().setAll(incidenciasAbiertas);
+    }
+
+    private void buscarIncidencias(String texto) {
+        ArrayList<Incidencia> encontradas = new ArrayList<>();
+        String textoBuscado = texto.trim().toLowerCase();
+
+        for (int i = 0; i < this.incidencias.size(); i++) {
+            Incidencia incidencia = this.incidencias.get(i);
+
+            if (incidencia.getTitulo().toLowerCase().contains(textoBuscado)
+                || incidencia.getDescripcion().toLowerCase().contains(textoBuscado)) {
+                encontradas.add(incidencia);
+            }
+        }
+
+        listaIncidencias.getItems().setAll(encontradas);
+
+        if (encontradas.isEmpty()) {
+            mensaje.setText("No se han encontrado incidencias con ese texto");
+        } else {
+            mensaje.setText("Incidencias encontradas: " + encontradas.size());
+        }
     }
 
     private void verDetalles(Stage stage, Incidencia incidenciaSeleccionada) {
@@ -449,7 +497,7 @@ public class Main extends Application {
         estadoPrioridadNuevaIncidenciaBox.setAlignment(Pos.CENTER);
         
         Button crearIncidencia = new Button("Guardar");
-        crearIncidencia.setDefaultButton(false);
+        crearIncidencia.setDefaultButton(true);
         crearIncidencia.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
         crearIncidencia.setOnMouseEntered(e -> crearIncidencia.setStyle("-fx-background-color: rgb(42, 107, 44); -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
         crearIncidencia.setOnMouseExited(e -> crearIncidencia.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
@@ -468,31 +516,44 @@ public class Main extends Application {
 
         botonNuevaIncidenciaBox.setAlignment(Pos.CENTER);
 
+        Label avisoFormulario = new Label();
+        avisoFormulario.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+
         VBox nuevaIncidenciaBox = new VBox(14,
             new Label("Titulo:"),
             campoNuevaIncidencia,
             new Label("Descripción:"),
             campoDescripcion,
             estadoPrioridadNuevaIncidenciaBox,
+            avisoFormulario, 
             botonNuevaIncidenciaBox
         );
 
         nuevaIncidenciaBox.setPadding(new Insets(20));
 
         crearIncidencia.setOnAction(e -> {
-            totalIncidenciasHechas++;
+            String titulo = campoNuevaIncidencia.getText().trim();
+            String descripcion = campoDescripcion.getText().trim();
 
-            if (comboNuevaEstado.getValue().equals("Abierta")) {
-                totalIncidenciasAbiertas++;
-            } else if (comboNuevaEstado.getValue().equals("En Proceso")) {
-                totalIncidenciasEnProceso++;
-            } else if (comboNuevaEstado.getValue().equals("Resuelta")) {
-                totalIncidenciasResueltas++;
-            }
+              if (titulo.isEmpty() || descripcion.isEmpty()) {
+                avisoFormulario.setText("Escriba el título y la descripción de la incidencia.");
+                return;
+              }
+            int nuevoId = incidencias.size() + 1; 
+                
+            this.incidencias.add(new Incidencia(
+                nuevoId,
+                titulo,
+                descripcion,
+                comboNuevaEstado.getValue(),
+                comboNuevaPrioridad.getValue()
+            ));
+
+                mostrarMensaje(new Label("Nueva incidencia creada con éxito"));
+                start(stage);
             
-            mostrarMensaje(new Label("Incidencia creada correctamente"));
-            start(stage);
         });
+    
 
         cancelar.setOnAction(e -> {
             mostrarMensaje(new Label("Creación de incidencia cancelada"));
