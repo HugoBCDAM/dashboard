@@ -213,6 +213,25 @@ public class Main extends Application {
 
         botonNuevaIncidencia.setOnAction(e -> nuevaIncidencia(stage));
 
+        comboEstado.setOnAction(e -> {
+            String estado = comboEstado.getValue();
+
+            switch (estado) {
+            case "Abiertas":
+                filtrarAbiertas();
+                break;
+            case "En Proceso":
+                filtrarEnProceso();
+                break;
+            case "Resueltas":
+                filtrarResueltas();
+                break;
+            default:
+                filtrarTodas();
+                break;
+            }  
+        });
+
         VBox raiz = new VBox(14, 
             incidencias,
             listaIncidencias,
@@ -222,6 +241,45 @@ public class Main extends Application {
         raiz.setPadding(new Insets(20));
 
         escenaIncidencias(stage, raiz);
+    }
+
+    private void filtrarTodas() {
+        listaIncidencias.getItems().setAll(this.incidencias);
+    }
+
+    private void filtrarResueltas() {
+        ArrayList<Incidencia> indicenciasResueltas = new ArrayList<>();
+
+        for (int i = 0; i < this.incidencias.size(); i++) {
+            if (this.incidencias.get(i).getEstado().equals("Resuelta")) {
+                indicenciasResueltas.add(this.incidencias.get(i));
+            }
+        }
+
+        listaIncidencias.getItems().setAll(indicenciasResueltas);
+    }
+    private void filtrarEnProceso() {
+        ArrayList<Incidencia> incidenciasEnProceso = new ArrayList<>();
+
+        for (int i = 0; i < this.incidencias.size(); i++) {
+            if (this.incidencias.get(i).getEstado().equals("En Proceso")) {
+                incidenciasEnProceso.add(this.incidencias.get(i));
+            }
+        }
+
+        listaIncidencias.getItems().setAll(incidenciasEnProceso);
+    }
+
+    private void filtrarAbiertas() {
+        ArrayList<Incidencia> incidenciasAbiertas = new ArrayList<>();
+
+        for (int i = 0; i < this.incidencias.size(); i++) {
+            if (this.incidencias.get(i).getEstado().equals("Abierta")) {
+                incidenciasAbiertas.add(this.incidencias.get(i));
+            }
+        }
+
+        listaIncidencias.getItems().setAll(incidenciasAbiertas);
     }
 
     private void verDetalles(Stage stage, Incidencia incidenciaSeleccionada) {
