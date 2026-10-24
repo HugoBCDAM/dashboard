@@ -315,8 +315,7 @@ public class Main extends Application {
         for (int i = 0; i < this.incidencias.size(); i++) {
             Incidencia incidencia = this.incidencias.get(i);
 
-            if (incidencia.getTitulo().toLowerCase().contains(textoBuscado)
-                || incidencia.getDescripcion().toLowerCase().contains(textoBuscado)) {
+            if (incidencia.getTitulo().toLowerCase().contains(textoBuscado)) {
                 encontradas.add(incidencia);
             }
         }
