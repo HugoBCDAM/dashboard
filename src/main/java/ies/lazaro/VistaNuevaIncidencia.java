@@ -91,6 +91,7 @@ public class VistaNuevaIncidencia {
         botonGuardar.setOnAction(e -> guardarIncidencia());
 
         Button botonCancelar = new Button("Cerrar");
+        botonCancelar.setCancelButton(true);
         botonCancelar.setStyle(CSS.ESTILO_BOTON_CANCELAR_INCIDENCIA);
         botonCancelar.setOnMouseEntered(e -> botonCancelar.setStyle(CSS.ESTILO_BOTON_CANCELAR_INCIDENCIA_RATON_ENCIMA));
         botonCancelar.setOnMouseExited(e -> botonCancelar.setStyle(CSS.ESTILO_BOTON_CANCELAR_INCIDENCIA_RATON_SALIDA));
