@@ -51,7 +51,6 @@ public class Main extends Application {
             crearIncidenciasIniciales();
         }
 
-
         actualizarContadores();
         
         TextField campoBuscar = new TextField();
@@ -61,18 +60,18 @@ public class Main extends Application {
 
         Button botonBuscar = new Button("Buscar");
         botonBuscar.setDefaultButton(true);
-        botonBuscar.setStyle("-fx-background-color: #3775fc; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
-        botonBuscar.setOnMouseEntered(e -> botonBuscar.setStyle("-fx-background-color: rgb(0, 0, 255); -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
-        botonBuscar.setOnMouseExited(e -> botonBuscar.setStyle("-fx-background-color: #3775fc; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        botonBuscar.setStyle(CSS.ESTILO_BOTON_BUSCAR);
+        botonBuscar.setOnMouseEntered(e -> botonBuscar.setStyle(CSS.ESTILO_BOTON_BUSCAR_RATON_ENCIMA));
+        botonBuscar.setOnMouseExited(e -> botonBuscar.setStyle(CSS.ESTILO_BOTON_BUSCAR_RATON_SALIDA));
 
         comboEstado = new ComboBox<>();
         comboEstado.getItems().addAll("Abiertas", "En Proceso", "Resueltas", "Todo");
         comboEstado.setPromptText("Filtrar");
 
         Button botonNuevaIncidencia = new Button("Nueva Incidencia");
-        botonNuevaIncidencia.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
-        botonNuevaIncidencia.setOnMouseEntered(e -> botonNuevaIncidencia.setStyle("-fx-background-color: rgb(41, 107, 43); -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
-        botonNuevaIncidencia.setOnMouseExited(e -> botonNuevaIncidencia.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        botonNuevaIncidencia.setStyle(CSS.ESTILO_BOTON_CREAR_INCIDENCIA);
+        botonNuevaIncidencia.setOnMouseEntered(e -> botonNuevaIncidencia.setStyle(CSS.ESTILO_BOTON_CREAR_INCIDENCIA_RATON_ENCIMA));
+        botonNuevaIncidencia.setOnMouseExited(e -> botonNuevaIncidencia.setStyle(CSS.ESTILO_BOTON_CREAR_INCIDENCIA_RATON_SALIDA));
 
         HBox incidencias = new HBox(10,
             campoBuscar,
@@ -106,34 +105,11 @@ public class Main extends Application {
             private final Button botonDetalles = new Button("Ver detalles");
 
             {
-                botonDetalles.setStyle(
-                    "-fx-background-color: transparent;" +
-                    "-fx-border-color: transparent;" +
-                    "-fx-padding: 0;" +
-                    "-fx-text-fill: #6A0DAD;" +
-                    "-fx-cursor: hand;"
-                );
+                botonDetalles.setStyle(CSS.ESTILO_BOTON_VER_DETALLES);
 
-                botonDetalles.setOnMouseEntered(e ->
-                    botonDetalles.setStyle(
-                        "-fx-background-color: transparent;" +
-                        "-fx-border-color: transparent;" +
-                        "-fx-padding: 0;" +
-                        "-fx-text-fill: #4B0082;" +
-                        "-fx-underline: true;" +
-                        "-fx-cursor: hand;"
-                    )
-                );
+                botonDetalles.setOnMouseEntered(e -> botonDetalles.setStyle(CSS.ESTILO_BOTON_VER_DETALLES_RATON_ENCIMA));
 
-                botonDetalles.setOnMouseExited(e ->
-                    botonDetalles.setStyle(
-                        "-fx-background-color: transparent;" +
-                        "-fx-border-color: transparent;" +
-                        "-fx-padding: 0;" +
-                        "-fx-text-fill: #6A0DAD;" +
-                        "-fx-cursor: hand;"
-                    )
-                );
+                botonDetalles.setOnMouseExited(e -> botonDetalles.setStyle(CSS.ESTILO_BOTON_VER_DETALLES_RATON_SALIDA));
 
                 botonDetalles.setOnAction(e -> {
                     Incidencia incidenciaSeleccionada = getTableRow().getItem();
@@ -167,25 +143,25 @@ public class Main extends Application {
         listaIncidencias.getItems().setAll(this.incidencias);
         
         totalIncidencias = new Label("Total de incidencias: " + totalIncidenciasHechas);
-        totalIncidencias.setStyle("-fx-font-weight: bold;");
+        totalIncidencias.setStyle(CSS.ESTILO_LABEL_TOTAL_INCIDENCIAS);
 
         incidenciasAbiertas = new Label("Abiertas: " + totalIncidenciasAbiertas);
-        incidenciasAbiertas.setStyle("-fx-font-weight: bold;");
+        incidenciasAbiertas.setStyle(CSS.ESTILO_LABEL_INCIDENCIAS_ABIERTAS);
 
         incidenciasEnProceso = new Label("En Proceso: " + totalIncidenciasEnProceso);
-        incidenciasEnProceso.setStyle("-fx-font-weight: bold;");
+        incidenciasEnProceso.setStyle(CSS.ESTILO_LABEL_INCIDENCIAS_EN_PROCESO);
 
         incidenciasResueltas = new Label("Resueltas: " + totalIncidenciasResueltas);
-        incidenciasResueltas.setStyle("-fx-font-weight: bold;");
+        incidenciasResueltas.setStyle(CSS.ESTILO_LABEL_INCIDENCIAS_RESUELTAS);
 
         Label separacion1 = new Label(" | ");
-        separacion1.setStyle("-fx-font-weight: bold;");
+        separacion1.setStyle(CSS.ESTILO_LABEL_SEPARACIONES);
 
         Label separacion2 = new Label(" | ");
-        separacion2.setStyle("-fx-font-weight: bold;");
+        separacion2.setStyle(CSS.ESTILO_LABEL_SEPARACIONES);
 
         Label separacion3 = new Label(" | ");
-        separacion3.setStyle("-fx-font-weight: bold;");
+        separacion3.setStyle(CSS.ESTILO_LABEL_SEPARACIONES);
         
         HBox estadoIncidencias = new HBox(10,
             totalIncidencias, 
@@ -203,7 +179,7 @@ public class Main extends Application {
         mensaje.setWrapText(true);
         mensaje.setMaxWidth(Double.MAX_VALUE);
         mensaje.setAlignment(Pos.CENTER);
-        mensaje.setStyle("-fx-font-weight: bold;");
+        mensaje.setStyle(CSS.ESTILO_LABEL_MENSAJE);
         
         VBox.setVgrow(listaIncidencias, Priority.ALWAYS);
         
@@ -212,14 +188,11 @@ public class Main extends Application {
             mensaje
         );
 
-        registroIncidenciasMensaje.setStyle("-fx-background-color: #d2d3d2; -fx-padding: 5px;");
+        registroIncidenciasMensaje.setStyle(CSS.ESTILO_REGISTRO_INCIDENCIAS_MENSAJE);
 
         botonNuevaIncidencia.setOnAction(e -> nuevaIncidencia(stage));
 
         botonBuscar.setOnAction(e -> buscarIncidencias(campoBuscar.getText()));
-
-        
-
 
         comboEstado.setOnAction(e -> {
             String estado = comboEstado.getValue();
@@ -353,7 +326,7 @@ public class Main extends Application {
             estadoDetalles
         );
 
-        cabecerasDetalles.setStyle("-fx-border-color: black; -fx-border-width: 1px; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-color: #bdb9b9;");
+        cabecerasDetalles.setStyle(CSS.ESTILO_CABECERAS_DETALLES);
         
         VBox valoresDetalles = new VBox(10,
             idDetallesValor,
@@ -363,7 +336,7 @@ public class Main extends Application {
             estadoDetallesValor
         );
 
-        valoresDetalles.setStyle("-fx-border-color: black; -fx-border-width: 1px; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-color: #e0dede;");
+        valoresDetalles.setStyle(CSS.ESTILO_VALORES_DETALLES);
         
         HBox detallesHBox = new HBox(cabecerasDetalles, valoresDetalles);
         detallesHBox.setMaxWidth(Double.MAX_VALUE);
@@ -379,14 +352,15 @@ public class Main extends Application {
         Button botonGuardarCambios = new Button("Guardar");
 
         botonGuardarCambios.setDefaultButton(false);
-        botonGuardarCambios.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
-        botonGuardarCambios.setOnMouseEntered(e -> botonGuardarCambios.setStyle("-fx-background-color: rgb(42, 107, 44); -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
-        botonGuardarCambios.setOnMouseExited(e -> botonGuardarCambios.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        botonGuardarCambios.setStyle(CSS.ESTILO_BOTON_GUARDAR_DETALLES);
+        botonGuardarCambios.setOnMouseEntered(e -> botonGuardarCambios.setStyle(CSS.ESTILO_BOTON_GUARDAR_DETALLES_RATON_ENCIMA));
+        botonGuardarCambios.setOnMouseExited(e -> botonGuardarCambios.setStyle(CSS.ESTILO_BOTON_GUARDAR_DETALLES_RATON_SALIDA));
 
         botonCerrarDetalles.setDefaultButton(true);
-        botonCerrarDetalles.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
-        botonCerrarDetalles.setOnMouseEntered(e -> botonCerrarDetalles.setStyle("-fx-background-color: #b40202; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
-        botonCerrarDetalles.setOnMouseExited(e -> botonCerrarDetalles.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        botonCerrarDetalles.setCancelButton(true);
+        botonCerrarDetalles.setStyle(CSS.ESTILO_BOTON_CERRAR_DETALLES);
+        botonCerrarDetalles.setOnMouseEntered(e -> botonCerrarDetalles.setStyle(CSS.ESTILO_BOTON_CERRAR_DETALLES_RATON_ENCIMA));
+        botonCerrarDetalles.setOnMouseExited(e -> botonCerrarDetalles.setStyle(CSS.ESTILO_BOTON_CERRAR_DETALLES_RATON_SALIDA));
         
         HBox cambiarEstadoBox = new HBox(10, 
             cambiarEstadoDetalles,
@@ -497,15 +471,15 @@ public class Main extends Application {
         
         Button crearIncidencia = new Button("Guardar");
         crearIncidencia.setDefaultButton(true);
-        crearIncidencia.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
-        crearIncidencia.setOnMouseEntered(e -> crearIncidencia.setStyle("-fx-background-color: rgb(42, 107, 44); -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
-        crearIncidencia.setOnMouseExited(e -> crearIncidencia.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        crearIncidencia.setStyle(CSS.ESTILO_BOTON_CREAR_INCIDENCIA_FORMULARIO);
+        crearIncidencia.setOnMouseEntered(e -> crearIncidencia.setStyle(CSS.ESTILO_BOTON_CREAR_INCIDENCIA_FORMULARIO_RATON_ENCIMA));
+        crearIncidencia.setOnMouseExited(e -> crearIncidencia.setStyle(CSS.ESTILO_BOTON_CREAR_INCIDENCIA_FORMULARIO_RATON_SALIDA));
 
         Button cancelar = new Button("Cerrar");
         cancelar.setDefaultButton(true);
-        cancelar.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;");
-        cancelar.setOnMouseEntered(e -> cancelar.setStyle("-fx-background-color: #b40202; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
-        cancelar.setOnMouseExited(e -> cancelar.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand;"));
+        cancelar.setStyle(CSS.ESTILO_BOTON_CANCELAR_INCIDENCIA);
+        cancelar.setOnMouseEntered(e -> cancelar.setStyle(CSS.ESTILO_BOTON_CANCELAR_INCIDENCIA_RATON_ENCIMA));
+        cancelar.setOnMouseExited(e -> cancelar.setStyle(CSS.ESTILO_BOTON_CANCELAR_INCIDENCIA_RATON_SALIDA));
 
         HBox botonNuevaIncidenciaBox = new HBox (10, 
             cancelar, 
@@ -516,7 +490,7 @@ public class Main extends Application {
         botonNuevaIncidenciaBox.setAlignment(Pos.CENTER);
 
         Label avisoFormulario = new Label();
-        avisoFormulario.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+        avisoFormulario.setStyle(CSS.ESTILO_LABEL_AVISO_FORMULARIO);
 
         VBox nuevaIncidenciaBox = new VBox(14,
             new Label("Titulo:"),
