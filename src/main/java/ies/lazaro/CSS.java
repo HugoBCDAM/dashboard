@@ -36,7 +36,7 @@ public static final String ESTILO_BOTON_CERRAR_DETALLES_RATON_SALIDA = "-fx-back
 //Estilo cabecerasDetalles
 public static final String ESTILO_CABECERAS_DETALLES = "-fx-border-color: black; -fx-border-width: 1px; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-color: #bdb9b9;";
 //Estilo valoresDetalles
-public static final String ESTILO_VALORES_DETALLES = "-fx-border-color: black; -fx-border-width: 1px; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-color: #bdb9b9;";
+public static final String ESTILO_VALORES_DETALLES = "-fx-border-color: black; -fx-border-width: 1px; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-color: #e0dede;";
 //Estilo Label totalIncidencias
 public static final String ESTILO_LABEL_TOTAL_INCIDENCIAS = "-fx-font-weight: bold;";
 //Estilo Label incidenciasAbiertas
