@@ -36,9 +36,9 @@ Linea de codigo puesta:
 
 | VistaPrincipal.java ---> Construye el dashboard: barra de búsqueda y filtro, tabla con el botón Ver detalles y barra de contadores y mensajes.  |
 
-| VistaNuevaIncidencia.java  ---> Construye el formulario de creaciónzxcvbnvbbnhgvbv y valida que el título y la descripción no estén vacíos.  |
+| VistaNuevaIncidencia.java  ---> Construye el formulario de creación y valida que el título y la descripción no estén vacíos.  |
 
-| VistaDetallesIncidencia.java  ---> Y este construye la vista de detalles y cambio de estado: la información, selección de nuevo estado y guardar/cerrar.  |
+| VistaDetallesIncidencia.java  ---> Este construye la vista de detalles y cambio de estado: la información, selección de nuevo estado y guardar/cerrar.  |
 
 | Main.java  ---> Mas simplificado.  |
 
